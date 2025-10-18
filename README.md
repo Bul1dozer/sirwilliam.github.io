@@ -1,10 +1,13 @@
 ---
-title: Code Clippers Portfolio
-emoji: 🌖
-colorFrom: gray
+title: Code & Clippers Portfolio ✂️💻
+colorFrom: pink
 colorTo: yellow
+emoji: 🐳
 sdk: static
 pinned: false
+tags:
+  - deepsite-v3
 ---
 
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+# Welcome to your new DeepSite project!
+This project was created with [DeepSite](https://deepsite.hf.co).
