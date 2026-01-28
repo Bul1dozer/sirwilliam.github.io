@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sir William | Tech Innovator & Mobile Barber</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;600&display=swap');
+        :root {
+            --primary-dark: #0a0a0a;
+            --secondary-dark: #1a1a1a;
+            --gold-accent: #D4AF37;
+            --gold-light: #F5D680;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--primary-dark);
+            color: white;
+            scroll-behavior: smooth;
+        }
+        .vanta-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        .gold-gradient {
+            background: linear-gradient(90deg, var(--gold-accent), var(--gold-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .progress-bar {
+            height: 6px;
+            background-color: #333;
+            border-radius: 3px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-accent), var(--gold-light));
+            border-radius: 3px;
+            transition: width 1s ease-in-out;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(212, 175, 55, 0.1), 0 10px 10px -5px rgba(212, 175, 55, 0.04);
+        }
+        .testimonial-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        .testimonial-card.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .floating-btn {
+            box-shadow: 0 4px 30px rgba(212, 175, 55, 0.4);
+        }
+        .dark-mode {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .dark-mode .bg-dark {
+            background-color: white;
+            color: #212529;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Vanta.js Background -->
+    <div id="vanta-bg" class="vanta-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-24 items-center">
+                <div>
+                    <span class="text-2xl font-bold gold-gradient">Sir William</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-white hover:text-gold-300 transition">Home</a>
+                    <a href="#about" class="text-white hover:text-gold-300 transition">About</a>
+                    <a href="#skills" class="text-white hover:text-gold-300 transition">Skills</a>
+                    <a href="#portfolio" class="text-white hover:text-gold-300 transition">Portfolio</a>
+                    <a href="#services" class="text-white hover:text-gold-300 transition">Services</a>
+                    <a href="#testimonials" class="text-white hover:text-gold-300 transition">Testimonials</a>
+                    <a href="#contact" class="text-white hover:text-gold-300 transition">Contact</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-full bg-gray-800 text-gold-300 hover:bg-gray-700 transition">
+                        <i data-feather="moon"></i>
+                    </button>
+                    <button class="md:hidden" id="mobile-menu-button">
+                        <i data-feather="menu" class="text-white"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90 pb-4 px-4">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="text-white hover:text-gold-300 transition py-2">Home</a>
+                <a href="#about" class="text-white hover:text-gold-300 transition py-2">About</a>
+                <a href="#skills" class="text-white hover:text-gold-300 transition py-2">Skills</a>
+                <a href="#portfolio" class="text-white hover:text-gold-300 transition py-2">Portfolio</a>
+                <a href="#services" class="text-white hover:text-gold-300 transition py-2">Services</a>
+                <a href="#testimonials" class="text-white hover:text-gold-300 transition py-2">Testimonials</a>
+                <a href="#contact" class="text-white hover:text-gold-300 transition py-2">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center pt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                        <span class="gold-gradient">Sir William</span>
+                        <span class="block text-white mt-4">Tech Innovator • Cybersecurity Enthusiast • Mobile Barber</span>
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8">Where technology meets creativity — crafting secure systems and sharp styles.</p>
+                    <div class="flex space-x-4">
+                        <a href="#contact" class="bg-gradient-to-r from-yellow-600 to-yellow-400 text-black font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition">Hire Me</a>
+                        <a href="#portfolio" class="border border-gold-300 text-gold-300 font-semibold px-6 py-3 rounded-lg hover:bg-gold-300 hover:bg-opacity-10 transition">View Work</a>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-yellow-600 to-yellow-400 rounded-2xl opacity-75 blur"></div>
+                        <img src="http://static.photos/black/640x360/42" alt="Sir William" class="relative rounded-2xl w-full max-w-md object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-black bg-opacity-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">About Me</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <p class="text-gray-300 mb-6 text-lg">I'm Sir William, a passionate IT student and entrepreneur with a unique blend of technical expertise and creative flair.</p>
+                    <p class="text-gray-300 mb-6">As a freelance IT technician, I specialize in PC and phone repair, networking solutions, and cybersecurity fundamentals. My journey in technology began with a curiosity about how things work, which evolved into a passion for building and securing digital systems.</p>
+                    <p class="text-gray-300 mb-6">Parallel to my tech career, I run <span class="text-gold-300 font-semibold">The Royals Barbers_CK</span>, a mobile barbering service where precision meets personal care. This venture allows me to express my creativity and connect with people on a personal level.</p>
+                    <p class="text-gray-300">Whether I'm debugging code or crafting the perfect fade, my approach is always the same: attention to detail, commitment to excellence, and a dedication to my craft that goes beyond the ordinary.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800">
+                        <div class="text-yellow-400 mb-4">
+                            <i data-feather="cpu" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Tech Education</h3>
+                        <p class="text-gray-400">Currently pursuing advanced studies in Information Technology with focus on cybersecurity.</p>
+                    </div>
+                    <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800">
+                        <div class="text-yellow-400 mb-4">
+                            <i data-feather="tool" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Freelance Tech</h3>
+                        <p class="text-gray-400">Providing IT solutions from hardware repairs to network setups since 2018.</p>
+                    </div>
+                    <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800">
+                        <div class="text-yellow-400 mb-4">
+                            <i data-feather="scissors" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Mobile Barber</h3>
+                        <p class="text-gray-400">Operating The Royals Barbers_CK, delivering premium grooming services on-the-go.</p>
+                    </div>
+                    <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800">
+                        <div class="text-yellow-400 mb-4">
+                            <i data-feather="code" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Future Goals</h3>
+                        <p class="text-gray-400">Developing innovative tech solutions while expanding my barbering brand.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">My Skills</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-white">Technical Skills</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">HTML/CSS</span>
+                                <span class="text-gold-300">90%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Python</span>
+                                <span class="text-gold-300">85%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Java/PHP</span>
+                                <span class="text-gold-300">75%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">SQL/Databases</span>
+                                <span class="text-gold-300">80%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Hardware Diagnostics</span>
+                                <span class="text-gold-300">95%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Cybersecurity Basics</span>
+                                <span class="text-gold-300">70%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-white">Professional Skills</h3>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800 flex flex-col items-center text-center">
+                            <div class="text-yellow-400 mb-4">
+                                <i data-feather="zap" class="w-10 h-10"></i>
+                            </div>
+                            <h4 class="font-semibold mb-2">Problem Solving</h4>
+                            <p class="text-gray-400 text-sm">Analytical approach to technical and creative challenges</p>
+                        </div>
+                        <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800 flex flex-col items-center text-center">
+                            <div class="text-yellow-400 mb-4">
+                                <i data-feather="eye" class="w-10 h-10"></i>
+                            </div>
+                            <h4 class="font-semibold mb-2">Attention to Detail</h4>
+                            <p class="text-gray-400 text-sm">Precision in both code and craft</p>
+                        </div>
+                        <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800 flex flex-col items-center text-center">
+                            <div class="text-yellow-400 mb-4">
+                                <i data-feather="users" class="w-10 h-10"></i>
+                            </div>
+                            <h4 class="font-semibold mb-2">Client Relations</h4>
+                            <p class="text-gray-400 text-sm">Building trust through communication</p>
+                        </div>
+                        <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800 flex flex-col items-center text-center">
+                            <div class="text-yellow-400 mb-4">
+                                <i data-feather="trending-up" class="w-10 h-10"></i>
+                            </div>
+                            <h4 class="font-semibold mb-2">Entrepreneurship</h4>
+                            <p class="text-gray-400 text-sm">Growing businesses with innovation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-black bg-opacity-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">Portfolio</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">A selection of my technical projects and barbering portfolio</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="http://static.photos/technology/640x360/1" alt="IT Support Project" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Corporate IT Support</h3>
+                        <p class="text-gray-400 mb-4">Network setup and security optimization for local business</p>
+                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">IT Support</span>
+                    </div>
+                </div>
+                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="http://static.photos/black/640x360/2" alt="Barber Portfolio" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">The Royals Branding</h3>
+                        <p class="text-gray-400 mb-4">Visual identity and marketing materials for mobile barbering</p>
+                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Barbering</span>
+                    </div>
+                </div>
+                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="http://static.photos/technology/640x360/3" alt="Web Development" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Radio Streaming Setup</h3>
+                        <p class="text-gray-400 mb-4">Custom web solution for online radio broadcasting</p>
+                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Web Dev</span>
+                    </div>
+                </div>
+                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="http://static.photos/black/640x360/4" alt="Barber Work" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Precision Cuts Collection</h3>
+                        <p class="text-gray-400 mb-4">Showcase of signature barbering styles and techniques</p>
+                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Barbering</span>
+                    </div>
+                </div>
+                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="http://static.photos/technology/640x360/5" alt="Tech Repair" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Device Repair Documentation</h3>
+                        <p class="text-gray-400 mb-4">Process guides for common hardware issues and fixes</p>
+                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Tech Repair</span>
+                    </div>
+                </div>
+                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
+                    <div class="h-48 overflow-hidden">
+                        <img src="http://static.photos/black/640x360/6" alt="Barber Station" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Mobile Barber Station Design</h3>
+                        <p class="text-gray-400 mb-4">Custom portable setup for premium mobile grooming</p>
+                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Barbering</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">My Services</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Bridging technology and grooming with professional services</p>
+            </div>
+            
+            <div class="mb-20">
+                <h3 class="text-2xl font-bold mb-8 text-center text-white">Technology Services</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
+                        <div class="text-yellow-400 mb-6">
+                            <i data-feather="monitor" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">PC Repair & Maintenance</h4>
+                        <p class="text-gray-400">Diagnostics, hardware repairs, software troubleshooting, and system optimization for desktops and laptops.</p>
+                    </div>
+                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
+                        <div class="text-yellow-400 mb-6">
+                            <i data-feather="smartphone" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">Mobile Device Repair</h4>
+                        <p class="text-gray-400">Screen replacements, battery issues, software problems, and other smartphone/tablet repairs.</p>
+                    </div>
+                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
+                        <div class="text-yellow-400 mb-6">
+                            <i data-feather="shield" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">Security Consultations</h4>
+                        <p class="text-gray-400">Basic cybersecurity assessments, vulnerability checks, and recommendations for personal/business use.</p>
+                    </div>
+                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
+                        <div class="text-yellow-400 mb-6">
+                            <i data-feather="wifi" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">Network Setup</h4>
+                        <p class="text-gray-400">Home/office network installations, troubleshooting, and optimization for better performance.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="text-2xl font-bold mb-8 text-center text-white">Barbering Services</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
+                        <div class="text-yellow-400 mb-6">
+                            <i data-feather="scissors" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">Precision Haircuts</h4>
+                        <p class="text-gray-400">Premium cuts including fades, tapers, and classic styles tailored to your preferences.</p>
+                        <div class="mt-4 flex justify-between text-sm text-gray-500">
+                            <span>Duration: 45-60min</span>
+                            <span>From: $25</span>
+                        </div>
+                    </div>
+                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
+                        <div class="text-yellow-400 mb-6">
+                            <i data-feather="user" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">Beard Grooming</h4>
+                        <p class="text-gray-400">Professional beard trims, shaping, and conditioning for a polished look.</p>
+                        <div class="mt-4 flex justify-between text-sm text-gray-500">
+                            <span>Duration: 30-45min</span>
+                            <span>From: $15</span>
+                        </div>
+                    </div>
+                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
+                        <div class="text-yellow-400 mb-6">
+                            <i data-feather="home" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">Mobile Service</h4>
+                        <p class="text-gray-400">Convenient at-home or office appointments with all necessary equipment.</p>
+                        <div class="mt-4 flex justify-between text-sm text-gray-500">
+                            <span>Travel fee may apply</span>
+                            <span>Book in advance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-black bg-opacity-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">Client Testimonials</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">What my clients say about my services</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="testimonials-container">
+                <!-- Testimonials will be added here via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">Get In Touch</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Have a project in mind or need a haircut? Reach out!</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <form class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="john@example.com">
+                        </div>
+                        <div>
+                            <label for="service" class="block text-sm font-medium text-gray-300 mb-2">Service Needed</label>
+                            <select id="service" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="">Select a service</option>
+                                <option value="tech">IT Services</option>
+                                <option value="barber">Barber Services</option>
+                                <option value="both">Both</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Your Message</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="Tell me about your project or booking request..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-yellow-600 to-yellow-500 text-black font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition">Send Message</button>
+                    </form>
+                </div>
+                <div>
+                    <div class="bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 h-full">
+                        <h3 class="text-xl font-bold mb-6 text-white">Contact Information</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="text-yellow-400 mt-1 mr-4">
+                                    <i data-feather="mail"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Email</h4>
+                                    <p class="text-gray-400">contact@Sir Williamportfolio.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-yellow-400 mt-1 mr-4">
+                                    <i data-feather="phone"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Phone/WhatsApp</h4>
+                                    <p class="text-gray-400">+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-yellow-400 mt-1 mr-4">
+                                    <i data-feather="map-pin"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Location</h4>
+                                    <p class="text-gray-400">Serving clients in the Greater London Area</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-yellow-400 mt-1 mr-4">
+                                    <i data-feather="clock"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Availability</h4>
+                                    <p class="text-gray-400">Tech Services: Mon-Fri 9am-6pm</p>
+                                    <p class="text-gray-400">Barber Services: By appointment</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <h4 class="font-semibold mb-4 text-white">Follow Me</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-yellow-400 hover:bg-yellow-400 hover:text-black transition">
+                                    <i data-feather="instagram"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-yellow-400 hover:bg-yellow-400 hover:text-black transition">
+                                    <i data-feather="twitter"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-yellow-400 hover:bg-yellow-400 hover:text-black transition">
+                                    <i data-feather="linkedin"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-yellow-400 hover:bg-yellow-400 hover:text-black transition">
+                                    <i data-feather="github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Action Button -->
+    <a href="#contact" class="fixed bottom-8 right-8 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black font-semibold px-6 py-3 rounded-full shadow-lg floating-btn flex items-center z-50">
+        <i data-feather="message-square" class="mr-2"></i> Hire Me
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-black bg-opacity-90 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center text-center">
+                <h2 class="text-2xl font-bold mb-4 gold-gradient">Sir William</h2>
+                <p class="text-gray-400 mb-6 max-w-lg">Where Innovation Meets Precision — in technology and grooming</p>
+                <div class="flex space-x-6 mb-6">
+                    <a href="#home" class="text-gray-400 hover:text-yellow-400 transition">Home</a>
+                    <a href="#about" class="text-gray-400 hover:text-yellow-400 transition">About</a>
+                    <a href="#services" class="text-gray-400 hover:text-yellow-400 transition">Services</a>
+                    <a href="#contact" class="text-gray-400 hover:text-yellow-400 transition">Contact</a>
+                </div>
+                <p class="text-gray-500 text-sm">© 2025 Sir William | The Royals Barbers_CK. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Vanta.js background
+        VANTA.NET({
+            el: "#vanta-bg",
+            color: 0xD4AF37,
+            backgroundColor: 0x0a0a0a,
+            points: 12,
+            maxDistance: 20,
+            spacing: 15
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuButton.querySelector('svg');
+            if (mobileMenu.classList.contains('hidden')) {
+                feather.replace();
+            } else {
+                icon.setAttribute('data-feather', 'x');
+                feather.replace();
+            }
+        });
+
+        // Dark/light mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('svg');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.setAttribute('data-feather', 'sun');
+            } else {
+                icon.setAttribute('data-feather', 'moon');
+            }
+            feather.replace();
+        });
+
+        // Testimonials data
+        const testimonials = [
+            {
+                quote: "Sir William fixed my laptop when no one else could. Fast, professional, and explained everything clearly. Highly recommend his tech services!",
+                name: "Sarah J.",
+                role: "Small Business Owner"
+            },
+            {
+                quote: "The best haircut I've ever had. Sir William's attention to detail is incredible. The mobile service is so convenient!",
+                name: "Michael T.",
+                role: "Regular Client"
+            },
+            {
+                quote: "He set up our office network perfectly. Knowledgeable, efficient, and great to work with. Will definitely use his services again.",
+                name: "David R.",
+                role: "IT Manager"
+            },
+            {
+                quote: "I trust Sir William with all my devices. His repairs are always top-notch at fair prices. A rare find in tech support.",
+                name: "Emily K.",
+                role: "Freelance Designer"
+            },
+            {
+                quote: "Consistently perfect fades every time. The Royals Barbers_CK is my go-to for grooming. Professional and personable.",
+                name: "James L.",
+                role: "Long-term Client"
+            },
+            {
+                quote: "Sir William helped secure our small business network. His cybersecurity advice was practical and effective. Very impressed.",
+                name: "Rachel M.",
+                role: "Business Owner"
+            }
+        ];
+
+        // Insert testimonials
+        const testimonialsContainer = document.getElementById('testimonials-container');
+        testimonials.forEach((testimonial, index) => {
+            const testimonialCard = document.createElement('div');
+            testimonialCard.className = 'testimonial-card bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800';
+            testimonialCard.innerHTML = `
+                <div class="text-yellow-400 mb-4">
+                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
+                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
+                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
+                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
+                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
+                </div>
+                <p class="text-gray-300 italic mb-6">"${testimonial.quote}"</p>
+                <div class="flex items-center">
+                    <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 w-10 h-10 rounded-full flex items-center justify-center text-black font-bold">
+                        ${testimonial.name.charAt(0)}
+                    </div>
+                    <div class="ml-4">
+                        <h4 class="font-semibold">${testimonial.name}</h4>
+                        <p class="text-gray-500 text-sm">${testimonial.role}</p>
+                    </div>
+                </div>
+            `;
+            testimonialsContainer.appendChild(testimonialCard);
+            
+            // Animate testimonials in sequence
+            setTimeout(() => {
+                testimonialCard.classList.add('active');
+            }, 200 * index);
+        });
+
+        // Animate progress bars on scroll
+        const animateProgressBars = () => {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        };
+
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.id === 'skills') {
+                        animateProgressBars();
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe sections
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Feather icons replace
+        feather.replace();
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        const icon = mobileMenuButton.querySelector('svg');
+                        icon.setAttribute('data-feather', 'menu');
+                        feather.replace();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
