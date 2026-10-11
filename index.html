@@ -3,754 +3,866 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sir William | Tech Innovator & Mobile Barber</title>
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <title>Sir William | Tech Support, Cybersecurity & Mobile Barbering</title>
+    <meta
+        name="description"
+        content="Sir William helps clients with practical IT support, entry-level cybersecurity guidance, device repair, and mobile barbering through The Royals Barbers_CK."
+    >
+    <meta property="og:title" content="Sir William | Tech Support & Mobile Barbering">
+    <meta property="og:description" content="Practical technical support and sharp mobile grooming from one reliable operator.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#0a0a0a">
+    <link
+        rel="icon"
+        type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' font-family='Arial' font-size='26' fill='%23D4AF37'%3ESW%3C/text%3E%3C/svg%3E"
+    >
+    <script>
+        tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        colors: {
+                            gold: {
+                                300: '#F5D680',
+                                400: '#D4AF37',
+                                500: '#B88A1B'
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+
         :root {
-            --primary-dark: #0a0a0a;
-            --secondary-dark: #1a1a1a;
-            --gold-accent: #D4AF37;
-            --gold-light: #F5D680;
+            color-scheme: dark;
+            --bg: #080808;
+            --surface: rgba(18, 18, 18, 0.78);
+            --line: rgba(255, 255, 255, 0.1);
+            --muted: #a6adbb;
+            --text: #f8fafc;
+            --gold: #d4af37;
+            --gold-soft: #f5d680;
+            --teal: #42d0b8;
+            --blue: #8cb6ff;
         }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--primary-dark);
-            color: white;
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
             scroll-behavior: smooth;
         }
-        .vanta-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
-            opacity: 0.3;
+
+        body {
+            margin: 0;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+                var(--bg);
+            background-size: 48px 48px;
+            color: var(--text);
+            font-family: 'Inter', system-ui, sans-serif;
+            letter-spacing: 0;
         }
+
+        body.light-mode {
+            color-scheme: light;
+            --bg: #f7f5ef;
+            --surface: rgba(255, 255, 255, 0.82);
+            --line: rgba(15, 23, 42, 0.12);
+            --muted: #526071;
+            --text: #111827;
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        section {
+            scroll-margin-top: 96px;
+        }
+
+        a,
+        button,
+        input,
+        textarea,
+        select {
+            outline-offset: 4px;
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible {
+            outline: 2px solid var(--gold-soft);
+        }
+
+        .skip-link {
+            position: fixed;
+            left: 1rem;
+            top: 1rem;
+            z-index: 100;
+            transform: translateY(-150%);
+            border-radius: 8px;
+            background: var(--gold-soft);
+            color: #111;
+            padding: 0.7rem 1rem;
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+
+        .skip-link:focus {
+            transform: translateY(0);
+        }
+
+        .vanta-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            opacity: 0.22;
+            pointer-events: none;
+        }
+
+        .page-glow {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                linear-gradient(135deg, rgba(212, 175, 55, 0.12), transparent 34%),
+                linear-gradient(315deg, rgba(66, 208, 184, 0.08), transparent 36%);
+        }
+
+        .nav-link {
+            color: rgba(248, 250, 252, 0.82);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .light-mode .nav-link {
+            color: rgba(17, 24, 39, 0.78);
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--gold-soft);
+        }
+
         .gold-gradient {
-            background: linear-gradient(90deg, var(--gold-accent), var(--gold-light));
+            background: linear-gradient(90deg, var(--gold), var(--gold-soft));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        .progress-bar {
-            height: 6px;
-            background-color: #333;
-            border-radius: 3px;
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid rgba(245, 214, 128, 0.28);
+            border-radius: 999px;
+            background: rgba(212, 175, 55, 0.09);
+            color: var(--gold-soft);
+            padding: 0.45rem 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
-        .progress-fill {
+
+        .btn {
+            display: inline-flex;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-weight: 800;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+            color: #101010;
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(245, 214, 128, 0.36);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--gold-soft);
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 18px 60px rgba(0, 0, 0, 0.24);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            line-height: 1.05;
+            letter-spacing: 0;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 7.4rem);
+            line-height: 0.9;
+            letter-spacing: 0;
+        }
+
+        .hero-visual {
+            min-height: 520px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-photo {
+            position: absolute;
+            inset: 0;
+            width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, var(--gold-accent), var(--gold-light));
-            border-radius: 3px;
-            transition: width 1s ease-in-out;
+            object-fit: cover;
+            opacity: 0.28;
+            filter: saturate(0.9) contrast(1.05);
         }
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(212, 175, 55, 0.1), 0 10px 10px -5px rgba(212, 175, 55, 0.04);
+
+        .light-mode .hero-photo {
+            opacity: 0.2;
         }
+
+        .command-panel {
+            position: absolute;
+            left: 1.25rem;
+            right: 1.25rem;
+            bottom: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            background: rgba(7, 10, 14, 0.84);
+            padding: 1rem;
+        }
+
+        .light-mode .command-panel {
+            background: rgba(255, 255, 255, 0.86);
+        }
+
+        .signal-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .signal {
+            min-height: 86px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.055);
+            padding: 0.85rem;
+        }
+
+        .light-mode .signal {
+            border-color: rgba(15, 23, 42, 0.12);
+            background: rgba(255, 255, 255, 0.72);
+        }
+
+        .service-card,
+        .work-card,
         .testimonial-card {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
-        .testimonial-card.active {
-            opacity: 1;
-            transform: translateY(0);
+
+        .service-card:hover,
+        .work-card:hover,
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(245, 214, 128, 0.44);
         }
+
+        .icon-chip {
+            display: inline-flex;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(212, 175, 55, 0.12);
+            color: var(--gold-soft);
+        }
+
+        .work-visual {
+            min-height: 180px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--line);
+            background:
+                linear-gradient(135deg, rgba(245, 214, 128, 0.18), transparent 34%),
+                linear-gradient(315deg, rgba(140, 182, 255, 0.14), transparent 36%),
+                rgba(255, 255, 255, 0.04);
+        }
+
+        .work-visual::after {
+            content: "";
+            position: absolute;
+            inset: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+        }
+
+        .work-visual span {
+            position: absolute;
+            left: 1rem;
+            bottom: 1rem;
+            z-index: 1;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.48);
+            color: var(--gold-soft);
+            padding: 0.45rem 0.75rem;
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
+        .field {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 0.85rem 1rem;
+            color: var(--text);
+        }
+
+        .field::placeholder {
+            color: rgba(166, 173, 187, 0.76);
+        }
+
+        .light-mode .field {
+            background: rgba(255, 255, 255, 0.86);
+        }
+
         .floating-btn {
-            box-shadow: 0 4px 30px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 14px 36px rgba(212, 175, 55, 0.24);
         }
-        .dark-mode {
-            background-color: #f8f9fa;
-            color: #212529;
+
+        @media (max-width: 767px) {
+            .hero-visual {
+                min-height: 460px;
+            }
+
+            .signal-row {
+                grid-template-columns: 1fr;
+            }
+
+            .command-panel {
+                position: relative;
+                left: auto;
+                right: auto;
+                bottom: auto;
+                margin: 1rem;
+            }
         }
-        .dark-mode .bg-dark {
-            background-color: white;
-            color: #212529;
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+
+            .vanta-bg {
+                display: none;
+            }
         }
     </style>
 </head>
 <body class="antialiased">
-    <!-- Vanta.js Background -->
+    <a href="#main" class="skip-link">Skip to content</a>
     <div id="vanta-bg" class="vanta-bg"></div>
+    <div class="page-glow" aria-hidden="true"></div>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-24 items-center">
-                <div>
-                    <span class="text-2xl font-bold gold-gradient">Sir William</span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-white hover:text-gold-300 transition">Home</a>
-                    <a href="#about" class="text-white hover:text-gold-300 transition">About</a>
-                    <a href="#skills" class="text-white hover:text-gold-300 transition">Skills</a>
-                    <a href="#portfolio" class="text-white hover:text-gold-300 transition">Portfolio</a>
-                    <a href="#services" class="text-white hover:text-gold-300 transition">Services</a>
-                    <a href="#testimonials" class="text-white hover:text-gold-300 transition">Testimonials</a>
-                    <a href="#contact" class="text-white hover:text-gold-300 transition">Contact</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button id="theme-toggle" class="p-2 rounded-full bg-gray-800 text-gold-300 hover:bg-gray-700 transition">
-                        <i data-feather="moon"></i>
-                    </button>
-                    <button class="md:hidden" id="mobile-menu-button">
-                        <i data-feather="menu" class="text-white"></i>
-                    </button>
-                </div>
+    <header class="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur-xl">
+        <nav class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Primary navigation">
+            <a href="#home" class="flex items-center gap-3" aria-label="Sir William home">
+                <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-200 text-sm font-black text-black">SW</span>
+                <span class="text-lg font-black tracking-normal">Sir William</span>
+            </a>
+
+            <div class="hidden items-center gap-7 md:flex">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#work" class="nav-link">Work</a>
+                <a href="#proof" class="nav-link">Proof</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button id="theme-toggle" class="btn btn-secondary !h-11 !w-11 !p-0" type="button" aria-label="Switch color theme">
+                    <i data-feather="moon" aria-hidden="true"></i>
+                </button>
+                <button id="mobile-menu-button" class="btn btn-secondary !h-11 !w-11 !p-0 md:hidden" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">
+                    <i data-feather="menu" aria-hidden="true"></i>
+                </button>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden border-t border-white/10 bg-black/95 px-4 py-5 md:hidden">
+            <div class="mx-auto flex max-w-7xl flex-col gap-4">
+                <a href="#about" class="nav-link py-2">About</a>
+                <a href="#services" class="nav-link py-2">Services</a>
+                <a href="#work" class="nav-link py-2">Work</a>
+                <a href="#proof" class="nav-link py-2">Proof</a>
+                <a href="#contact" class="nav-link py-2">Contact</a>
             </div>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90 pb-4 px-4">
-            <div class="flex flex-col space-y-3">
-                <a href="#home" class="text-white hover:text-gold-300 transition py-2">Home</a>
-                <a href="#about" class="text-white hover:text-gold-300 transition py-2">About</a>
-                <a href="#skills" class="text-white hover:text-gold-300 transition py-2">Skills</a>
-                <a href="#portfolio" class="text-white hover:text-gold-300 transition py-2">Portfolio</a>
-                <a href="#services" class="text-white hover:text-gold-300 transition py-2">Services</a>
-                <a href="#testimonials" class="text-white hover:text-gold-300 transition py-2">Testimonials</a>
-                <a href="#contact" class="text-white hover:text-gold-300 transition py-2">Contact</a>
-            </div>
-        </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center pt-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <main id="main">
+        <section id="home" class="min-h-screen pt-28">
+            <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pt-16">
                 <div>
-                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                        <span class="gold-gradient">Sir William</span>
-                        <span class="block text-white mt-4">Tech Innovator • Cybersecurity Enthusiast • Mobile Barber</span>
+                    <span class="eyebrow">Tech support + mobile grooming</span>
+                    <h1 class="hero-title mt-6">
+                        Sir <span class="gold-gradient">William</span>
                     </h1>
-                    <p class="text-xl text-gray-300 mb-8">Where technology meets creativity — crafting secure systems and sharp styles.</p>
-                    <div class="flex space-x-4">
-                        <a href="#contact" class="bg-gradient-to-r from-yellow-600 to-yellow-400 text-black font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition">Hire Me</a>
-                        <a href="#portfolio" class="border border-gold-300 text-gold-300 font-semibold px-6 py-3 rounded-lg hover:bg-gold-300 hover:bg-opacity-10 transition">View Work</a>
+                    <p class="mt-6 max-w-2xl text-xl leading-8 text-gray-300">
+                        Practical IT help, cybersecurity fundamentals, device repair, and clean mobile barbering for clients who want the job handled clearly.
+                    </p>
+                    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                        <a href="#contact" class="btn btn-primary">
+                            <i data-feather="message-square" aria-hidden="true"></i>
+                            Start a booking
+                        </a>
+                        <a href="#services" class="btn btn-secondary">
+                            <i data-feather="layers" aria-hidden="true"></i>
+                            View services
+                        </a>
+                    </div>
+                    <div class="mt-10 grid grid-cols-3 gap-3 text-sm sm:max-w-xl">
+                        <div class="panel p-4">
+                            <strong class="block text-2xl text-white">2</strong>
+                            <span class="text-gray-400">Service lanes</span>
+                        </div>
+                        <div class="panel p-4">
+                            <strong class="block text-2xl text-white">1:1</strong>
+                            <span class="text-gray-400">Client support</span>
+                        </div>
+                        <div class="panel p-4">
+                            <strong class="block text-2xl text-white">Mobile</strong>
+                            <span class="text-gray-400">On request</span>
+                        </div>
                     </div>
                 </div>
-                <div class="flex justify-center">
-                    <div class="relative">
-                        <div class="absolute -inset-4 bg-gradient-to-r from-yellow-600 to-yellow-400 rounded-2xl opacity-75 blur"></div>
-                        <img src="http://static.photos/black/640x360/42" alt="Sir William" class="relative rounded-2xl w-full max-w-md object-cover">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-black bg-opacity-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">About Me</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
+                <div class="panel hero-visual">
+                    <img
+                        class="hero-photo"
+                        src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
+                        alt="Laptop workstation used for technical support"
+                    >
+                    <div class="absolute inset-x-5 top-5 flex items-center justify-between rounded-lg border border-white/10 bg-black/55 p-4 backdrop-blur">
+                        <div>
+                            <p class="text-sm font-bold text-gold-300">Now taking requests</p>
+                            <p class="text-xs text-gray-300">Repairs, setup, security basics, grooming</p>
+                        </div>
+                        <span class="rounded-full bg-emerald-400/20 px-3 py-1 text-xs font-black text-emerald-200">OPEN</span>
+                    </div>
+                    <div class="command-panel">
+                        <p class="mb-4 text-sm font-bold text-gray-300">Service dashboard</p>
+                        <div class="signal-row">
+                            <div class="signal">
+                                <i data-feather="cpu" class="mb-3 text-gold-300" aria-hidden="true"></i>
+                                <strong class="block">Diagnostics</strong>
+                                <span class="text-sm text-gray-400">PC and device triage</span>
+                            </div>
+                            <div class="signal">
+                                <i data-feather="shield" class="mb-3 text-teal-300" aria-hidden="true"></i>
+                                <strong class="block">Security</strong>
+                                <span class="text-sm text-gray-400">Safer accounts and systems</span>
+                            </div>
+                            <div class="signal">
+                                <i data-feather="scissors" class="mb-3 text-blue-300" aria-hidden="true"></i>
+                                <strong class="block">Cuts</strong>
+                                <span class="text-sm text-gray-400">Mobile grooming appointments</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        </section>
+
+        <section id="about" class="py-20">
+            <div class="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
                 <div>
-                    <p class="text-gray-300 mb-6 text-lg">I'm Sir William, a passionate IT student and entrepreneur with a unique blend of technical expertise and creative flair.</p>
-                    <p class="text-gray-300 mb-6">As a freelance IT technician, I specialize in PC and phone repair, networking solutions, and cybersecurity fundamentals. My journey in technology began with a curiosity about how things work, which evolved into a passion for building and securing digital systems.</p>
-                    <p class="text-gray-300 mb-6">Parallel to my tech career, I run <span class="text-gold-300 font-semibold">The Royals Barbers_CK</span>, a mobile barbering service where precision meets personal care. This venture allows me to express my creativity and connect with people on a personal level.</p>
-                    <p class="text-gray-300">Whether I'm debugging code or crafting the perfect fade, my approach is always the same: attention to detail, commitment to excellence, and a dedication to my craft that goes beyond the ordinary.</p>
+                    <span class="eyebrow">About</span>
+                    <h2 class="section-title mt-5 text-4xl md:text-5xl">A hands-on operator for digital and personal service.</h2>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800">
-                        <div class="text-yellow-400 mb-4">
-                            <i data-feather="cpu" class="w-10 h-10"></i>
+                <div class="panel p-6 md:p-8">
+                    <p class="text-lg leading-8 text-gray-300">
+                        Sir William blends freelance IT support with the craft of mobile barbering. The result is a practical, people-first service style: clear diagnosis, reliable follow-through, and careful attention to detail.
+                    </p>
+                    <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div class="rounded-lg border border-white/10 p-5">
+                            <div class="icon-chip mb-4"><i data-feather="tool" aria-hidden="true"></i></div>
+                            <h3 class="font-black">Freelance IT</h3>
+                            <p class="mt-2 text-sm leading-6 text-gray-400">Hardware checks, software cleanup, network setup, and practical troubleshooting.</p>
                         </div>
-                        <h3 class="text-xl font-semibold mb-2">Tech Education</h3>
-                        <p class="text-gray-400">Currently pursuing advanced studies in Information Technology with focus on cybersecurity.</p>
-                    </div>
-                    <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800">
-                        <div class="text-yellow-400 mb-4">
-                            <i data-feather="tool" class="w-10 h-10"></i>
+                        <div class="rounded-lg border border-white/10 p-5">
+                            <div class="icon-chip mb-4"><i data-feather="shield" aria-hidden="true"></i></div>
+                            <h3 class="font-black">Cybersecurity Growth</h3>
+                            <p class="mt-2 text-sm leading-6 text-gray-400">Account hygiene, basic risk checks, and safer everyday technology habits.</p>
                         </div>
-                        <h3 class="text-xl font-semibold mb-2">Freelance Tech</h3>
-                        <p class="text-gray-400">Providing IT solutions from hardware repairs to network setups since 2018.</p>
-                    </div>
-                    <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800">
-                        <div class="text-yellow-400 mb-4">
-                            <i data-feather="scissors" class="w-10 h-10"></i>
+                        <div class="rounded-lg border border-white/10 p-5">
+                            <div class="icon-chip mb-4"><i data-feather="scissors" aria-hidden="true"></i></div>
+                            <h3 class="font-black">The Royals Barbers_CK</h3>
+                            <p class="mt-2 text-sm leading-6 text-gray-400">Mobile grooming with clean fades, trims, detailing, and appointment-based service.</p>
                         </div>
-                        <h3 class="text-xl font-semibold mb-2">Mobile Barber</h3>
-                        <p class="text-gray-400">Operating The Royals Barbers_CK, delivering premium grooming services on-the-go.</p>
-                    </div>
-                    <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800">
-                        <div class="text-yellow-400 mb-4">
-                            <i data-feather="code" class="w-10 h-10"></i>
+                        <div class="rounded-lg border border-white/10 p-5">
+                            <div class="icon-chip mb-4"><i data-feather="check-circle" aria-hidden="true"></i></div>
+                            <h3 class="font-black">Working Style</h3>
+                            <p class="mt-2 text-sm leading-6 text-gray-400">Plain language, tidy work, and realistic next steps after every job.</p>
                         </div>
-                        <h3 class="text-xl font-semibold mb-2">Future Goals</h3>
-                        <p class="text-gray-400">Developing innovative tech solutions while expanding my barbering brand.</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">My Skills</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
+        <section id="services" class="py-20">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <span class="eyebrow">Services</span>
+                        <h2 class="section-title mt-5 text-4xl md:text-5xl">Clear help, without the runaround.</h2>
+                    </div>
+                    <p class="max-w-xl text-gray-400">Choose the lane you need, send a short brief, and get a practical response for the next step.</p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+                    <article class="service-card panel p-6">
+                        <div class="icon-chip mb-5"><i data-feather="monitor" aria-hidden="true"></i></div>
+                        <h3 class="text-lg font-black">PC Repair</h3>
+                        <p class="mt-3 text-sm leading-6 text-gray-400">Diagnostics, slow computer cleanup, component checks, operating system issues, and setup help.</p>
+                    </article>
+                    <article class="service-card panel p-6">
+                        <div class="icon-chip mb-5"><i data-feather="smartphone" aria-hidden="true"></i></div>
+                        <h3 class="text-lg font-black">Phone Support</h3>
+                        <p class="mt-3 text-sm leading-6 text-gray-400">Device troubleshooting, app issues, data guidance, battery concerns, and repair direction.</p>
+                    </article>
+                    <article class="service-card panel p-6">
+                        <div class="icon-chip mb-5"><i data-feather="wifi" aria-hidden="true"></i></div>
+                        <h3 class="text-lg font-black">Networks</h3>
+                        <p class="mt-3 text-sm leading-6 text-gray-400">Home or small office Wi-Fi setup, router checks, dead zone diagnosis, and basic hardening.</p>
+                    </article>
+                    <article class="service-card panel p-6">
+                        <div class="icon-chip mb-5"><i data-feather="user-check" aria-hidden="true"></i></div>
+                        <h3 class="text-lg font-black">Mobile Barbering</h3>
+                        <p class="mt-3 text-sm leading-6 text-gray-400">Haircuts, fades, beard shaping, and grooming appointments through The Royals Barbers_CK.</p>
+                    </article>
+                </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        </section>
+
+        <section id="work" class="py-20">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center">
+                    <span class="eyebrow">Selected work</span>
+                    <h2 class="section-title mx-auto mt-5 max-w-3xl text-4xl md:text-5xl">Projects that show the range.</h2>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <article class="work-card panel overflow-hidden">
+                        <div class="work-visual"><span>IT Support</span></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-black">Small Business Setup</h3>
+                            <p class="mt-3 text-sm leading-6 text-gray-400">Network and workstation preparation for a local team that needed a cleaner daily workflow.</p>
+                        </div>
+                    </article>
+                    <article class="work-card panel overflow-hidden">
+                        <div class="work-visual"><span>Brand Identity</span></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-black">The Royals Barbers_CK</h3>
+                            <p class="mt-3 text-sm leading-6 text-gray-400">A mobile grooming brand focused on precision, convenience, and personal presentation.</p>
+                        </div>
+                    </article>
+                    <article class="work-card panel overflow-hidden">
+                        <div class="work-visual"><span>Web Systems</span></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-black">Streaming Setup</h3>
+                            <p class="mt-3 text-sm leading-6 text-gray-400">A lightweight web setup for online audio broadcasting and content access.</p>
+                        </div>
+                    </article>
+                    <article class="work-card panel overflow-hidden">
+                        <div class="work-visual"><span>Repair Process</span></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-black">Device Repair Notes</h3>
+                            <p class="mt-3 text-sm leading-6 text-gray-400">Repeatable checklists for common hardware and software support issues.</p>
+                        </div>
+                    </article>
+                    <article class="work-card panel overflow-hidden">
+                        <div class="work-visual"><span>Security Basics</span></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-black">Account Safety Reviews</h3>
+                            <p class="mt-3 text-sm leading-6 text-gray-400">Practical guidance for passwords, multi-factor authentication, and safer device habits.</p>
+                        </div>
+                    </article>
+                    <article class="work-card panel overflow-hidden">
+                        <div class="work-visual"><span>Mobile Service</span></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-black">Portable Barber Station</h3>
+                            <p class="mt-3 text-sm leading-6 text-gray-400">A compact appointment setup designed around tidy tools and dependable service.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="proof" class="py-20">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <span class="eyebrow">Proof points</span>
+                        <h2 class="section-title mt-5 text-4xl md:text-5xl">What clients value most.</h2>
+                    </div>
+                    <p class="max-w-xl text-gray-400">Short, credible testimonials that can later be replaced with verified reviews and client names.</p>
+                </div>
+                <div id="testimonials-container" class="grid grid-cols-1 gap-5 md:grid-cols-3"></div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20">
+            <div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 text-white">Technical Skills</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">HTML/CSS</span>
-                                <span class="text-gold-300">90%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 90%"></div>
-                            </div>
+                    <span class="eyebrow">Contact</span>
+                    <h2 class="section-title mt-5 text-4xl md:text-5xl">Send the job brief.</h2>
+                    <p class="mt-5 max-w-2xl text-lg leading-8 text-gray-300">
+                        Tell Sir William what you need, when you need it, and whether the request is technical support, grooming, or both. The form creates a clean draft you can paste into your preferred contact channel.
+                    </p>
+                    <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div class="panel p-5">
+                            <i data-feather="clock" class="mb-4 text-gold-300" aria-hidden="true"></i>
+                            <h3 class="font-black">Fast triage</h3>
+                            <p class="mt-2 text-sm text-gray-400">A short brief makes it easier to estimate time, tools, and next steps.</p>
                         </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">Python</span>
-                                <span class="text-gold-300">85%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">Java/PHP</span>
-                                <span class="text-gold-300">75%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">SQL/Databases</span>
-                                <span class="text-gold-300">80%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">Hardware Diagnostics</span>
-                                <span class="text-gold-300">95%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 95%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">Cybersecurity Basics</span>
-                                <span class="text-gold-300">70%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 70%"></div>
-                            </div>
+                        <div class="panel p-5">
+                            <i data-feather="map-pin" class="mb-4 text-teal-300" aria-hidden="true"></i>
+                            <h3 class="font-black">Flexible service</h3>
+                            <p class="mt-2 text-sm text-gray-400">Remote support, local bookings, and mobile grooming can be coordinated by request.</p>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <h3 class="text-2xl font-bold mb-6 text-white">Professional Skills</h3>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800 flex flex-col items-center text-center">
-                            <div class="text-yellow-400 mb-4">
-                                <i data-feather="zap" class="w-10 h-10"></i>
-                            </div>
-                            <h4 class="font-semibold mb-2">Problem Solving</h4>
-                            <p class="text-gray-400 text-sm">Analytical approach to technical and creative challenges</p>
-                        </div>
-                        <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800 flex flex-col items-center text-center">
-                            <div class="text-yellow-400 mb-4">
-                                <i data-feather="eye" class="w-10 h-10"></i>
-                            </div>
-                            <h4 class="font-semibold mb-2">Attention to Detail</h4>
-                            <p class="text-gray-400 text-sm">Precision in both code and craft</p>
-                        </div>
-                        <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800 flex flex-col items-center text-center">
-                            <div class="text-yellow-400 mb-4">
-                                <i data-feather="users" class="w-10 h-10"></i>
-                            </div>
-                            <h4 class="font-semibold mb-2">Client Relations</h4>
-                            <p class="text-gray-400 text-sm">Building trust through communication</p>
-                        </div>
-                        <div class="bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800 flex flex-col items-center text-center">
-                            <div class="text-yellow-400 mb-4">
-                                <i data-feather="trending-up" class="w-10 h-10"></i>
-                            </div>
-                            <h4 class="font-semibold mb-2">Entrepreneurship</h4>
-                            <p class="text-gray-400 text-sm">Growing businesses with innovation</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="py-20 bg-black bg-opacity-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">Portfolio</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
-                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">A selection of my technical projects and barbering portfolio</p>
+                <form id="contact-form" class="panel space-y-5 p-6 md:p-8">
+                    <div>
+                        <label for="name" class="mb-2 block text-sm font-bold">Name</label>
+                        <input id="name" name="name" class="field" type="text" placeholder="Your name" autocomplete="name" required>
+                    </div>
+                    <div>
+                        <label for="email" class="mb-2 block text-sm font-bold">Email or phone</label>
+                        <input id="email" name="email" class="field" type="text" placeholder="How should you be contacted?" autocomplete="email" required>
+                    </div>
+                    <div>
+                        <label for="service" class="mb-2 block text-sm font-bold">Service</label>
+                        <select id="service" name="service" class="field" required>
+                            <option value="">Select one</option>
+                            <option>IT support</option>
+                            <option>Device repair</option>
+                            <option>Cybersecurity basics</option>
+                            <option>Mobile barbering</option>
+                            <option>Both tech and barbering</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="message" class="mb-2 block text-sm font-bold">Message</label>
+                        <textarea id="message" name="message" class="field min-h-36 resize-y" placeholder="What happened, where are you based, and what date/time works?" required></textarea>
+                    </div>
+                    <button class="btn btn-primary w-full" type="submit">
+                        <i data-feather="copy" aria-hidden="true"></i>
+                        Copy booking draft
+                    </button>
+                    <p id="form-status" class="text-sm leading-6 text-gray-400" role="status">
+                        Contact delivery is ready for your real email or WhatsApp number. For now this copies a polished message draft.
+                    </p>
+                </form>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
-                    <div class="h-48 overflow-hidden">
-                        <img src="http://static.photos/technology/640x360/1" alt="IT Support Project" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Corporate IT Support</h3>
-                        <p class="text-gray-400 mb-4">Network setup and security optimization for local business</p>
-                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">IT Support</span>
-                    </div>
-                </div>
-                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
-                    <div class="h-48 overflow-hidden">
-                        <img src="http://static.photos/black/640x360/2" alt="Barber Portfolio" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">The Royals Branding</h3>
-                        <p class="text-gray-400 mb-4">Visual identity and marketing materials for mobile barbering</p>
-                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Barbering</span>
-                    </div>
-                </div>
-                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
-                    <div class="h-48 overflow-hidden">
-                        <img src="http://static.photos/technology/640x360/3" alt="Web Development" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Radio Streaming Setup</h3>
-                        <p class="text-gray-400 mb-4">Custom web solution for online radio broadcasting</p>
-                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Web Dev</span>
-                    </div>
-                </div>
-                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
-                    <div class="h-48 overflow-hidden">
-                        <img src="http://static.photos/black/640x360/4" alt="Barber Work" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Precision Cuts Collection</h3>
-                        <p class="text-gray-400 mb-4">Showcase of signature barbering styles and techniques</p>
-                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Barbering</span>
-                    </div>
-                </div>
-                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
-                    <div class="h-48 overflow-hidden">
-                        <img src="http://static.photos/technology/640x360/5" alt="Tech Repair" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Device Repair Documentation</h3>
-                        <p class="text-gray-400 mb-4">Process guides for common hardware issues and fixes</p>
-                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Tech Repair</span>
-                    </div>
-                </div>
-                <div class="bg-gray-900 bg-opacity-50 rounded-xl overflow-hidden border border-gray-800 hover:border-yellow-400 transition group">
-                    <div class="h-48 overflow-hidden">
-                        <img src="http://static.photos/black/640x360/6" alt="Barber Station" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Mobile Barber Station Design</h3>
-                        <p class="text-gray-400 mb-4">Custom portable setup for premium mobile grooming</p>
-                        <span class="inline-block bg-gray-800 rounded-full px-3 py-1 text-sm font-semibold text-yellow-400">Barbering</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Services Section -->
-    <section id="services" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">My Services</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
-                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Bridging technology and grooming with professional services</p>
-            </div>
-            
-            <div class="mb-20">
-                <h3 class="text-2xl font-bold mb-8 text-center text-white">Technology Services</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
-                        <div class="text-yellow-400 mb-6">
-                            <i data-feather="monitor" class="w-10 h-10"></i>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">PC Repair & Maintenance</h4>
-                        <p class="text-gray-400">Diagnostics, hardware repairs, software troubleshooting, and system optimization for desktops and laptops.</p>
-                    </div>
-                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
-                        <div class="text-yellow-400 mb-6">
-                            <i data-feather="smartphone" class="w-10 h-10"></i>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">Mobile Device Repair</h4>
-                        <p class="text-gray-400">Screen replacements, battery issues, software problems, and other smartphone/tablet repairs.</p>
-                    </div>
-                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
-                        <div class="text-yellow-400 mb-6">
-                            <i data-feather="shield" class="w-10 h-10"></i>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">Security Consultations</h4>
-                        <p class="text-gray-400">Basic cybersecurity assessments, vulnerability checks, and recommendations for personal/business use.</p>
-                    </div>
-                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
-                        <div class="text-yellow-400 mb-6">
-                            <i data-feather="wifi" class="w-10 h-10"></i>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">Network Setup</h4>
-                        <p class="text-gray-400">Home/office network installations, troubleshooting, and optimization for better performance.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div>
-                <h3 class="text-2xl font-bold mb-8 text-center text-white">Barbering Services</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
-                        <div class="text-yellow-400 mb-6">
-                            <i data-feather="scissors" class="w-10 h-10"></i>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">Precision Haircuts</h4>
-                        <p class="text-gray-400">Premium cuts including fades, tapers, and classic styles tailored to your preferences.</p>
-                        <div class="mt-4 flex justify-between text-sm text-gray-500">
-                            <span>Duration: 45-60min</span>
-                            <span>From: $25</span>
-                        </div>
-                    </div>
-                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
-                        <div class="text-yellow-400 mb-6">
-                            <i data-feather="user" class="w-10 h-10"></i>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">Beard Grooming</h4>
-                        <p class="text-gray-400">Professional beard trims, shaping, and conditioning for a polished look.</p>
-                        <div class="mt-4 flex justify-between text-sm text-gray-500">
-                            <span>Duration: 30-45min</span>
-                            <span>From: $15</span>
-                        </div>
-                    </div>
-                    <div class="service-card bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 transition duration-300">
-                        <div class="text-yellow-400 mb-6">
-                            <i data-feather="home" class="w-10 h-10"></i>
-                        </div>
-                        <h4 class="text-xl font-bold mb-3">Mobile Service</h4>
-                        <p class="text-gray-400">Convenient at-home or office appointments with all necessary equipment.</p>
-                        <div class="mt-4 flex justify-between text-sm text-gray-500">
-                            <span>Travel fee may apply</span>
-                            <span>Book in advance</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="py-20 bg-black bg-opacity-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">Client Testimonials</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
-                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">What my clients say about my services</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="testimonials-container">
-                <!-- Testimonials will be added here via JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 gold-gradient">Get In Touch</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-400 mx-auto"></div>
-                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Have a project in mind or need a haircut? Reach out!</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div>
-                    <form class="space-y-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
-                            <input type="text" id="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="John Doe">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                            <input type="email" id="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="john@example.com">
-                        </div>
-                        <div>
-                            <label for="service" class="block text-sm font-medium text-gray-300 mb-2">Service Needed</label>
-                            <select id="service" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-                                <option value="">Select a service</option>
-                                <option value="tech">IT Services</option>
-                                <option value="barber">Barber Services</option>
-                                <option value="both">Both</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Your Message</label>
-                            <textarea id="message" rows="5" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="Tell me about your project or booking request..."></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-gradient-to-r from-yellow-600 to-yellow-500 text-black font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition">Send Message</button>
-                    </form>
-                </div>
-                <div>
-                    <div class="bg-gray-900 bg-opacity-50 p-8 rounded-xl border border-gray-800 h-full">
-                        <h3 class="text-xl font-bold mb-6 text-white">Contact Information</h3>
-                        <div class="space-y-6">
-                            <div class="flex items-start">
-                                <div class="text-yellow-400 mt-1 mr-4">
-                                    <i data-feather="mail"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold mb-1">Email</h4>
-                                    <p class="text-gray-400">contact@Sir Williamportfolio.com</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <div class="text-yellow-400 mt-1 mr-4">
-                                    <i data-feather="phone"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold mb-1">Phone/WhatsApp</h4>
-                                    <p class="text-gray-400">+1 (555) 123-4567</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <div class="text-yellow-400 mt-1 mr-4">
-                                    <i data-feather="map-pin"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold mb-1">Location</h4>
-                                    <p class="text-gray-400">Serving clients in the Greater London Area</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <div class="text-yellow-400 mt-1 mr-4">
-                                    <i data-feather="clock"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold mb-1">Availability</h4>
-                                    <p class="text-gray-400">Tech Services: Mon-Fri 9am-6pm</p>
-                                    <p class="text-gray-400">Barber Services: By appointment</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-8">
-                            <h4 class="font-semibold mb-4 text-white">Follow Me</h4>
-                            <div class="flex space-x-4">
-                                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-yellow-400 hover:bg-yellow-400 hover:text-black transition">
-                                    <i data-feather="instagram"></i>
-                                </a>
-                                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-yellow-400 hover:bg-yellow-400 hover:text-black transition">
-                                    <i data-feather="twitter"></i>
-                                </a>
-                                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-yellow-400 hover:bg-yellow-400 hover:text-black transition">
-                                    <i data-feather="linkedin"></i>
-                                </a>
-                                <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-yellow-400 hover:bg-yellow-400 hover:text-black transition">
-                                    <i data-feather="github"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Floating Action Button -->
-    <a href="#contact" class="fixed bottom-8 right-8 bg-gradient-to-r from-yellow-600 to-yellow-500 text-black font-semibold px-6 py-3 rounded-full shadow-lg floating-btn flex items-center z-50">
-        <i data-feather="message-square" class="mr-2"></i> Hire Me
+    <a href="#contact" class="floating-btn btn btn-primary fixed bottom-5 right-5 z-40 hidden sm:inline-flex">
+        <i data-feather="send" aria-hidden="true"></i>
+        Book
     </a>
 
-    <!-- Footer -->
-    <footer class="bg-black bg-opacity-90 py-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col items-center text-center">
-                <h2 class="text-2xl font-bold mb-4 gold-gradient">Sir William</h2>
-                <p class="text-gray-400 mb-6 max-w-lg">Where Innovation Meets Precision — in technology and grooming</p>
-                <div class="flex space-x-6 mb-6">
-                    <a href="#home" class="text-gray-400 hover:text-yellow-400 transition">Home</a>
-                    <a href="#about" class="text-gray-400 hover:text-yellow-400 transition">About</a>
-                    <a href="#services" class="text-gray-400 hover:text-yellow-400 transition">Services</a>
-                    <a href="#contact" class="text-gray-400 hover:text-yellow-400 transition">Contact</a>
-                </div>
-                <p class="text-gray-500 text-sm">© 2025 Sir William | The Royals Barbers_CK. All rights reserved.</p>
-            </div>
+    <footer class="border-t border-white/10 bg-black/70 py-10">
+        <div class="mx-auto flex max-w-7xl flex-col gap-5 px-4 text-center sm:px-6 lg:px-8">
+            <p class="text-2xl font-black gold-gradient">Sir William</p>
+            <p class="text-sm text-gray-400">Tech support, practical cybersecurity, and mobile barbering through The Royals Barbers_CK.</p>
+            <p class="text-xs text-gray-500">&copy; <span id="year"></span> Sir William. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Initialize Vanta.js background
-        VANTA.NET({
-            el: "#vanta-bg",
-            color: 0xD4AF37,
-            backgroundColor: 0x0a0a0a,
-            points: 12,
-            maxDistance: 20,
-            spacing: 15
-        });
+        const setIcon = (element, iconName) => {
+            element.innerHTML = `<i data-feather="${iconName}" aria-hidden="true"></i>`;
+            feather.replace();
+        };
 
-        // Mobile menu toggle
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefersReducedMotion && window.VANTA && window.VANTA.NET && window.THREE) {
+            VANTA.NET({
+                el: '#vanta-bg',
+                color: 0xd4af37,
+                backgroundColor: 0x080808,
+                points: 9,
+                maxDistance: 22,
+                spacing: 18
+            });
+        }
+
+        const body = document.body;
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            const icon = mobileMenuButton.querySelector('svg');
-            if (mobileMenu.classList.contains('hidden')) {
-                feather.replace();
-            } else {
-                icon.setAttribute('data-feather', 'x');
-                feather.replace();
-            }
-        });
-
-        // Dark/light mode toggle
         const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const icon = themeToggle.querySelector('svg');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.setAttribute('data-feather', 'sun');
-            } else {
-                icon.setAttribute('data-feather', 'moon');
-            }
-            feather.replace();
+        const contactForm = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+        const year = document.getElementById('year');
+        const navLinks = [...document.querySelectorAll('.nav-link')];
+        const savedTheme = localStorage.getItem('sir-william-theme');
+
+        year.textContent = new Date().getFullYear();
+
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            setIcon(themeToggle, 'sun');
+        } else {
+            setIcon(themeToggle, 'moon');
+        }
+
+        setIcon(mobileMenuButton, 'menu');
+        feather.replace();
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isOpening = mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            body.classList.toggle('menu-open', isOpening);
+            mobileMenuButton.setAttribute('aria-expanded', String(isOpening));
+            mobileMenuButton.setAttribute('aria-label', isOpening ? 'Close menu' : 'Open menu');
+            setIcon(mobileMenuButton, isOpening ? 'x' : 'menu');
         });
 
-        // Testimonials data
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
+            localStorage.setItem('sir-william-theme', isLight ? 'light' : 'dark');
+            setIcon(themeToggle, isLight ? 'sun' : 'moon');
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener('click', (event) => {
+                const targetId = anchor.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (!target) return;
+
+                event.preventDefault();
+                target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    body.classList.remove('menu-open');
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    mobileMenuButton.setAttribute('aria-label', 'Open menu');
+                    setIcon(mobileMenuButton, 'menu');
+                }
+            });
+        });
+
         const testimonials = [
             {
-                quote: "Sir William fixed my laptop when no one else could. Fast, professional, and explained everything clearly. Highly recommend his tech services!",
-                name: "Sarah J.",
-                role: "Small Business Owner"
+                quote: 'Clear explanations, quick turnaround, and no mystery around what needed to be fixed.',
+                name: 'Small business client',
+                role: 'IT support'
             },
             {
-                quote: "The best haircut I've ever had. Sir William's attention to detail is incredible. The mobile service is so convenient!",
-                name: "Michael T.",
-                role: "Regular Client"
+                quote: 'The mobile service is convenient, tidy, and consistent. The fade came out exactly how I asked.',
+                name: 'Regular client',
+                role: 'Barbering'
             },
             {
-                quote: "He set up our office network perfectly. Knowledgeable, efficient, and great to work with. Will definitely use his services again.",
-                name: "David R.",
-                role: "IT Manager"
-            },
-            {
-                quote: "I trust Sir William with all my devices. His repairs are always top-notch at fair prices. A rare find in tech support.",
-                name: "Emily K.",
-                role: "Freelance Designer"
-            },
-            {
-                quote: "Consistently perfect fades every time. The Royals Barbers_CK is my go-to for grooming. Professional and personable.",
-                name: "James L.",
-                role: "Long-term Client"
-            },
-            {
-                quote: "Sir William helped secure our small business network. His cybersecurity advice was practical and effective. Very impressed.",
-                name: "Rachel M.",
-                role: "Business Owner"
+                quote: 'Reliable, patient, and practical. I knew what to do next after the device check.',
+                name: 'Repair client',
+                role: 'Device diagnostics'
             }
         ];
 
-        // Insert testimonials
         const testimonialsContainer = document.getElementById('testimonials-container');
-        testimonials.forEach((testimonial, index) => {
-            const testimonialCard = document.createElement('div');
-            testimonialCard.className = 'testimonial-card bg-gray-900 bg-opacity-50 p-6 rounded-xl border border-gray-800';
-            testimonialCard.innerHTML = `
-                <div class="text-yellow-400 mb-4">
-                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
-                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
-                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
-                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
-                    <i data-feather="star" class="w-5 h-5 inline-block"></i>
+        testimonials.forEach((testimonial) => {
+            const card = document.createElement('article');
+            card.className = 'testimonial-card panel p-6';
+            card.innerHTML = `
+                <div class="mb-5 flex gap-1 text-gold-300" aria-label="Five star rating">
+                    <i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i>
                 </div>
-                <p class="text-gray-300 italic mb-6">"${testimonial.quote}"</p>
-                <div class="flex items-center">
-                    <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 w-10 h-10 rounded-full flex items-center justify-center text-black font-bold">
-                        ${testimonial.name.charAt(0)}
-                    </div>
-                    <div class="ml-4">
-                        <h4 class="font-semibold">${testimonial.name}</h4>
-                        <p class="text-gray-500 text-sm">${testimonial.role}</p>
-                    </div>
+                <p class="leading-7 text-gray-300">"${testimonial.quote}"</p>
+                <div class="mt-6 border-t border-white/10 pt-5">
+                    <h3 class="font-black">${testimonial.name}</h3>
+                    <p class="text-sm text-gray-500">${testimonial.role}</p>
                 </div>
             `;
-            testimonialsContainer.appendChild(testimonialCard);
-            
-            // Animate testimonials in sequence
-            setTimeout(() => {
-                testimonialCard.classList.add('active');
-            }, 200 * index);
+            testimonialsContainer.appendChild(card);
         });
 
-        // Animate progress bars on scroll
-        const animateProgressBars = () => {
-            const progressBars = document.querySelectorAll('.progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                const id = entry.target.getAttribute('id');
+                navLinks.forEach((link) => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                });
             });
-        };
+        }, { rootMargin: '-38% 0px -54% 0px', threshold: 0 });
 
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (entry.target.id === 'skills') {
-                        animateProgressBars();
-                    }
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        // Observe sections
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
+        document.querySelectorAll('main section[id]').forEach((section) => {
+            sectionObserver.observe(section);
         });
 
-        // Feather icons replace
-        feather.replace();
+        contactForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const data = new FormData(contactForm);
+            const draft = [
+                'Booking request for Sir William',
+                '',
+                `Name: ${data.get('name')}`,
+                `Contact: ${data.get('email')}`,
+                `Service: ${data.get('service')}`,
+                '',
+                'Message:',
+                data.get('message')
+            ].join('\n');
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                        const icon = mobileMenuButton.querySelector('svg');
-                        icon.setAttribute('data-feather', 'menu');
-                        feather.replace();
-                    }
-                }
-            });
+            try {
+                await navigator.clipboard.writeText(draft);
+                formStatus.textContent = 'Booking draft copied. Paste it into your preferred email, WhatsApp, or DM.';
+                contactForm.reset();
+            } catch (error) {
+                formStatus.textContent = 'Draft ready: select the form text and copy it manually if clipboard access is blocked.';
+            }
         });
     </script>
 </body>
