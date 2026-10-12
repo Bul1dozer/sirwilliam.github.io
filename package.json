@@ -1,0 +1,13 @@
+{
+  "name": "sir-william-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static portfolio for Sir William — no build step. Dev dependencies are only for tests.",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "node --test tests/*.test.js"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.0"
+  }
+}
