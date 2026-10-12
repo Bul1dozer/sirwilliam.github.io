@@ -5,11 +5,20 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   const currency = 'N$';
 
-  // Barbering prices (N$). Do not add beard, travel or discount prices until they are confirmed.
+  // Barbering prices (N$), from the Royals Barbers_CK pricelist. House calls only.
+  // prefix "+" marks an add-on; hint is small text under the label.
   const prices = [
-    { label: 'Men', amount: 70 },
-    { label: 'Students', amount: 50 },
-    { label: 'Boys', amount: 40 }
+    { label: "Men's cut", amount: 70 },
+    { label: 'Students', hint: '13–19 yrs', amount: 50 },
+    { label: 'Boys', hint: '0–12 yrs', amount: 40 },
+    { label: 'Enhancements', hint: 'add-on to any cut', prefix: '+', amount: 35 },
+    { label: 'Taxi fare', hint: 'house calls', amount: 50 }
+  ];
+
+  // Computer-related service pricing (N$). Confirm wording before adding extra tiers or "from" prices.
+  const techPrices = [
+    { label: 'Diagnosis / consultation', amount: 270 },
+    { label: 'Work done', amount: 500 }
   ];
 
   /*
@@ -141,6 +150,8 @@
       tone: 'practical',
       image: 'images/projects/livestream-av.png',
       alt: 'Livestream and AV control setup',
+      fallbackImage: 'https://images.unsplash.com/photo-1518972559570-7cc1309f3229?auto=format&fit=crop&w=1200&q=70',
+      fallbackAlt: 'Illustrative stock photo: close-up of a powered-on audio mixing console',
       repoUrl: null,
       liveUrl: null
     },
@@ -161,6 +172,8 @@
       tone: 'practical',
       image: 'images/projects/network-diagnostics.png',
       alt: 'Network diagnostics results',
+      fallbackImage: 'https://images.pexels.com/photos/159304/network-cable-ethernet-computer-159304.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      fallbackAlt: 'Illustrative stock photo: ethernet cables plugged into a router',
       repoUrl: null,
       liveUrl: null,
       note: 'Described in general terms to protect client and institutional confidentiality.'
@@ -182,11 +195,29 @@
       tone: 'learning',
       image: 'images/projects/linux-server.png',
       alt: 'Linux server terminal session',
+      fallbackImage: 'https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      fallbackAlt: 'Illustrative stock photo: programming code on a computer screen in a dark room',
       repoUrl: null,
       liveUrl: null,
       note: 'A learning and setup project — not production-scale server administration.'
     }
   ];
 
-  return { currency, prices, projects };
+  /*
+   * Gallery ("Recent work"): no code edits needed. Upload photos to images/gallery/ named 1, 2, 3, ...
+   * with a lowercase extension (jpg, jpeg, png or webp), e.g. 3.jpg, 4.webp. They appear automatically,
+   * in numeric order. Numbering must be continuous (loading stops at the first missing number).
+   * Optional: describe a photo for screen readers with alts: { 3: 'Fresh skin fade with a sharp line-up' }.
+   */
+  const gallery = {
+    folder: 'images/gallery',
+    exts: ['jpg', 'jpeg', 'png', 'webp'],
+    max: 40,
+    alts: {
+      1: "Close-up of a boy's fresh haircut with a sharp, clean hairline",
+      2: 'Side view of a haircut with a curved design shaved into the hair'
+    }
+  };
+
+  return { currency, prices, techPrices, projects, gallery };
 });

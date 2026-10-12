@@ -83,15 +83,18 @@
 
   /* Prices (from assets/content.js) */
   const content = window.SITE_CONTENT;
-  const priceList = doc.getElementById('price-list');
-  if (content && priceList) {
-    content.prices.forEach((p) => {
+  function renderPrices(id, items) {
+    const list = doc.getElementById(id);
+    if (!content || !list) return;
+    items.forEach((p) => {
       const row = doc.createElement('div'); row.className = 'price-row';
       const dt = doc.createElement('dt'); dt.textContent = p.label;
-      const dd = doc.createElement('dd'); dd.textContent = content.currency + p.amount;
-      row.appendChild(dt); row.appendChild(dd); priceList.appendChild(row);
+      if (p.hint) { const h = doc.createElement('span'); h.className = 'price-hint'; h.textContent = p.hint; dt.appendChild(h); }
+      const dd = doc.createElement('dd'); dd.textContent = (p.prefix || '') + content.currency + p.amount;
+      row.appendChild(dt); row.appendChild(dd); list.appendChild(row);
     });
   }
+  if (content) { renderPrices('price-list', content.prices); renderPrices('tech-price-list', content.techPrices); }
 
   /* Projects + dialog */
   const dialog = doc.getElementById('project-dialog');
@@ -102,6 +105,15 @@
     dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
     dialog.addEventListener('close', () => { if (dialog._trigger) dialog._trigger.focus(); });
   }
+
+  /* Gallery: auto-discovers images/gallery/1.ext, 2.ext, ... */
+  const photoDialog = doc.getElementById('photo-dialog');
+  if (photoDialog) {
+    doc.getElementById('photo-close').addEventListener('click', () => photoDialog.close());
+    photoDialog.addEventListener('click', (e) => { if (e.target === photoDialog) photoDialog.close(); });
+    photoDialog.addEventListener('close', () => { if (photoDialog._trigger) photoDialog._trigger.focus(); });
+  }
+  if (content && window.Gallery) window.Gallery.initGallery(doc, content.gallery).then(icons);
 
   /* Contact form */
   if (window.Contact) window.Contact.initContactForm(doc, window.SITE_CONFIG, window.fetch ? window.fetch.bind(window) : undefined);

@@ -32,8 +32,10 @@ There is no production build step — deploy the files as they are.
 | `assets/config.js` | **Contact-form endpoint** and public contact details |
 | `assets/content.js` | **Barbering prices** and **project card data** (edit here, no code changes) |
 | `assets/projects.js` | Reusable project-card + details-dialog renderer |
+| `assets/gallery.js` | Auto-discovers `images/gallery/1.jpg, 2.png, …` |
 | `assets/contact.js`, `assets/validation.js` | Form validation and Formspree submission |
 | `images/projects/` | Project screenshots (see `SCREENSHOTS.md`) |
+| `images/gallery/` | Barbering photos — just upload `3.jpg`, `4.png`, … |
 | `tests/` | Automated tests |
 | `style.css` | Original DeepSite template stylesheet — unused by the page, left untouched |
 
@@ -62,8 +64,9 @@ How a submission works: the browser POSTs JSON (`name`, `email`, `_replyto`, `ph
 - **Projects:** `assets/content.js` → `projects`. Set `repoUrl` / `liveUrl` only to real public URLs; a button appears automatically. Leave `null` and no button is shown.
 - **Contact details:** `assets/config.js`, plus the links in `index.html` (search for `liamroyalty9@gmail.com` and `264817813918`).
 
-## Screenshots
-Drop PNGs into `images/projects/` using the filenames in `SCREENSHOTS.md`; cards update automatically. Missing files show a labelled placeholder.
+## Screenshots and gallery
+- Project screenshots: drop PNGs into `images/projects/` using the filenames in `SCREENSHOTS.md`; cards update automatically. The AV, network and Linux cards currently show labelled online stand-in photos until you add the real ones.
+- Barbering gallery: upload `3.jpg`, `4.webp`, … to `images/gallery/` (continuous numbers, lowercase extension). See `SCREENSHOTS.md`.
 
 ## Social sharing (still to configure)
 Add once the production URL exists: `<link rel="canonical">` and `og:image` (absolute URL to a 1200×630 branded image). A TODO marks the spot in `<head>`. No domain or social URLs were invented.

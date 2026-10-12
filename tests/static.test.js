@@ -50,7 +50,9 @@ test('fabricated testimonials and arbitrary percentages are gone', () => {
 test('prices render in N$ with the agreed values', () => {
   const { w, doc: d } = loadPage();
   const C = w.SITE_CONTENT;
-  assert.deepEqual(Array.from(C.prices, (p) => C.currency + p.amount), ['N$70', 'N$50', 'N$40']);
+  assert.deepEqual(Array.from(C.prices, (p) => (p.prefix || '') + C.currency + p.amount), ['N$70', 'N$50', 'N$40', '+N$35', 'N$50']);
+  const taxi = C.prices.find((p) => p.label === 'Taxi fare');
+  assert.equal(taxi.amount, 50);
 });
 test('formal penetration testing is not offered', () => {
   assert.ok(/not currently advertised/i.test(html));
@@ -71,4 +73,28 @@ test('screenshots that exist on disk are the ones referenced; every project has 
     if (!fs.existsSync(path.join(root, p.image))) missing.push(p.image);
   });
   assert.deepEqual(missing.sort(), ['images/projects/linux-server.png', 'images/projects/livestream-av.png', 'images/projects/network-diagnostics.png']);
+});
+
+test('Instagram links to the real profile (contact, barbering block, footer)', () => {
+  const ig = [...doc.querySelectorAll('a[href*="instagram.com"]')];
+  assert.ok(ig.length >= 3);
+  ig.forEach((a) => assert.equal(a.getAttribute('href'), 'https://www.instagram.com/the.royals.barbers_ck/'));
+});
+test('computer-related prices are N$270 (diagnosis) and N$500 (work done)', () => {
+  const { w } = loadPage();
+  const C = w.SITE_CONTENT;
+  assert.deepEqual(Array.from(C.techPrices, (p) => p.label + ' ' + C.currency + p.amount), ['Diagnosis / consultation N$270', 'Work done N$500']);
+  assert.ok(doc.getElementById('tech-price-list'));
+});
+
+test('gallery: starter photos 1 and 2 exist on disk; block is hidden until photos are found', () => {
+  assert.ok(fs.existsSync(path.join(root, 'images/gallery/1.png')));
+  assert.ok(fs.existsSync(path.join(root, 'images/gallery/2.png')));
+  assert.equal(doc.getElementById('gallery-block').hidden, true);
+});
+test('illustrative project images use https URLs and are described as illustrative', () => {
+  const { w } = loadPage();
+  const fb = w.SITE_CONTENT.projects.filter((p) => p.fallbackImage);
+  assert.deepEqual(Array.from(fb, (p) => p.id).sort(), ['linux-server', 'livestream-av', 'network-diagnostics']);
+  fb.forEach((p) => { assert.match(p.fallbackImage, /^https:\/\//); assert.match(p.fallbackAlt, /^Illustrative/); });
 });
