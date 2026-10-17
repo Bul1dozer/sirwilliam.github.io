@@ -53,18 +53,9 @@
     img.alt = project.alt;
     img.width = 1400;
     img.height = 875;
-    img.setAttribute('loading', 'lazy');
-    img.setAttribute('decoding', 'async');
+    img.loading = 'lazy';
+    img.decoding = 'async';
     img.addEventListener('error', () => {
-      // 1st failure of the local screenshot: try the online illustrative image (clearly labelled).
-      if (project.fallbackImage && !wrap.dataset.fallback) {
-        wrap.dataset.fallback = '1';
-        wrap.classList.add('is-illustrative');
-        img.alt = project.fallbackAlt || project.alt;
-        img.src = project.fallbackImage;
-        wrap.appendChild(h(doc, 'span', 'shot-illustrative', 'Illustrative image'));
-        return;
-      }
       wrap.classList.add('is-missing');
       wrap.replaceChildren(placeholder(doc, project));
     });

@@ -14,7 +14,6 @@ window.SITE_CONFIG = {
     email: "liamroyalty9@gmail.com",
     phoneDisplay: "081 781 3918",
     phoneTel: "tel:+264817813918",
-    whatsapp: "https://wa.me/264817813918",
-    instagram: "https://www.instagram.com/the.royals.barbers_ck/"
+    whatsapp: "https://wa.me/264817813918"
   }
 };
