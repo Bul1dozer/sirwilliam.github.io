@@ -112,6 +112,12 @@ test('project cards: 7 rendered, alt text present, no dead buttons, missing imag
     assert.ok(c.querySelector('.status').textContent.length > 0);
   });
   const card = grid.querySelector('[data-project-id="linux-server"]');
+  // 1st error (no local screenshot yet): switches to the labelled online illustration
+  card.querySelector('img').dispatchEvent(new w.Event('error'));
+  assert.match(card.querySelector('img').src, /^https:\/\//);
+  assert.match(card.querySelector('.shot-illustrative').textContent, /Illustrative/);
+  assert.match(card.querySelector('img').alt, /^Illustrative/);
+  // 2nd error (online image also fails): labelled placeholder, layout intact
   card.querySelector('img').dispatchEvent(new w.Event('error'));
   assert.ok(card.querySelector('.shot-placeholder'));
   assert.match(card.querySelector('.shot-badge').textContent, /placeholder/i);
@@ -135,4 +141,60 @@ test('details dialog shows built vs planned for BarberSnap', () => {
   assert.match(text, /Built so far/);
   assert.match(text, /Still planned/);
   assert.match(text, /Hairline measurement/);
+});
+
+const probeFor = (existing) => async (url) => existing.includes(url);
+
+test('gallery: discovers numbered photos with any supported extension, in order, and shows the block', async () => {
+  const { w, doc } = loadPage();
+  const found = await w.Gallery.initGallery(doc, w.SITE_CONTENT.gallery, probeFor(['images/gallery/1.png', 'images/gallery/2.jpg', 'images/gallery/3.webp']));
+  assert.deepEqual(Array.from(found, (f) => f.src), ['images/gallery/1.png', 'images/gallery/2.jpg', 'images/gallery/3.webp']);
+  assert.equal(doc.getElementById('gallery-block').hidden, false);
+  const imgs = doc.querySelectorAll('#gallery-list img');
+  assert.equal(imgs.length, 3);
+  assert.match(imgs[0].alt, /hairline/);             // configured alt
+  assert.match(imgs[2].alt, /photo 3/);              // default alt for new uploads
+  imgs.forEach((i) => assert.equal(i.getAttribute('loading'), 'lazy'));
+});
+test('gallery: stops at the first gap; hidden when nothing uploaded', async () => {
+  const a = loadPage();
+  const found = await a.w.Gallery.initGallery(a.doc, a.w.SITE_CONTENT.gallery, probeFor(['images/gallery/1.png', 'images/gallery/3.png']));
+  assert.equal(found.length, 1);
+  const b = loadPage();
+  await b.w.Gallery.initGallery(b.doc, b.w.SITE_CONTENT.gallery, probeFor([]));
+  assert.equal(b.doc.getElementById('gallery-block').hidden, true);
+});
+test('gallery: thumbnails open the large-photo dialog', async () => {
+  const { w, doc } = loadPage();
+  await w.Gallery.initGallery(doc, w.SITE_CONTENT.gallery, probeFor(['images/gallery/1.png']));
+  doc.querySelector('.gallery-item').click();
+  const d = doc.getElementById('photo-dialog');
+  assert.ok(d.hasAttribute('open'));
+  assert.equal(doc.getElementById('photo-large').getAttribute('src'), 'images/gallery/1.png');
+});
+
+test('About carousel prefers personal photos, falls back to barbering photos, and supports controls', async () => {
+  const { w, doc } = loadPage();
+  w.matchMedia = () => ({ matches: true });
+  const available = ['images/gallery/1.png', 'images/gallery/2.png', 'images/about/profile.jpg'];
+  const probe = async (url) => available.includes(url);
+
+  const controller = await w.AboutCarousel.init(doc, w.SITE_CONTENT.aboutPhotos, probe);
+  const carousel = doc.getElementById('about-carousel');
+  assert.equal(controller.slides.length, 1, 'a personal photo takes precedence over generic barbering fallbacks');
+  assert.equal(carousel.hidden, false);
+  assert.equal(carousel.querySelector('.about-carousel-slide img').getAttribute('src'), 'images/about/profile.jpg');
+  assert.equal(carousel.querySelector('[data-carousel-toggle]').hidden, true, 'autoplay is disabled for reduced motion');
+  carousel.querySelector('[data-carousel-next]').click();
+  assert.equal(carousel.querySelector('[data-carousel-caption]').textContent, 'Meet Sir William');
+  controller.destroy();
+
+  const fallbackPage = loadPage();
+  fallbackPage.w.matchMedia = () => ({ matches: true });
+  const fallback = await fallbackPage.w.AboutCarousel.init(fallbackPage.doc, fallbackPage.w.SITE_CONTENT.aboutPhotos, async (url) => available.includes(url) && url.startsWith('images/gallery/'));
+  assert.equal(fallback.slides.length, 2);
+  assert.match(fallbackPage.doc.querySelector('[data-carousel-caption]').textContent, /barbering work/i);
+  fallbackPage.doc.querySelector('[data-carousel-next]').click();
+  assert.match(fallbackPage.doc.querySelector('[data-carousel-caption]').textContent, /barbering details/i);
+  fallback.destroy();
 });
