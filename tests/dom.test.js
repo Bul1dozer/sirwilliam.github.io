@@ -79,9 +79,9 @@ test('network error: failure, values preserved', async () => {
   assert.ok(doc.getElementById('form-status').classList.contains('is-error'));
   assert.equal(doc.getElementById('email').value, 'jane@example.com');
 });
-test('shipped placeholder endpoint: nothing sent, honest not-activated message, no success', async () => {
+test('placeholder endpoint: nothing sent, honest not-activated message, no success', async () => {
   let calls = 0;
-  const { w, doc } = boot(async () => { calls++; return res(true, 200, { ok: true }); });
+  const { w, doc } = boot(async () => { calls++; return res(true, 200, { ok: true }); }, 'https://formspree.io/f/YOUR_FORM_ID');
   assert.match(w.SITE_CONFIG.formEndpoint, /YOUR_FORM_ID/);
   fill(doc);
   submit(w, doc); await tick(); await tick();
