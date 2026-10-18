@@ -5,20 +5,11 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   const currency = 'N$';
 
-  // Barbering prices (N$), from the Royals Barbers_CK pricelist. House calls only.
-  // prefix "+" marks an add-on; hint is small text under the label.
+  // Current haircut prices supplied for the portfolio (N$).
   const prices = [
     { label: "Men's cut", amount: 70 },
-    { label: 'Students', hint: '13–19 yrs', amount: 50 },
-    { label: 'Boys', hint: '0–12 yrs', amount: 40 },
-    { label: 'Enhancements', hint: 'add-on to any cut', prefix: '+', amount: 35 },
-    { label: 'Taxi fare', hint: 'house calls', amount: 50 }
-  ];
-
-  // Computer-related service pricing (N$). Confirm wording before adding extra tiers or "from" prices.
-  const techPrices = [
-    { label: 'Diagnosis / consultation', amount: 270 },
-    { label: 'Work done', amount: 500 }
+    { label: 'Students', amount: 50 },
+    { label: 'Boys', amount: 40 }
   ];
 
   /*
@@ -231,5 +222,5 @@
     }
   };
 
-  return { currency, prices, techPrices, projects, gallery, aboutPhotos };
+  return { currency, prices, projects, gallery, aboutPhotos };
 });
