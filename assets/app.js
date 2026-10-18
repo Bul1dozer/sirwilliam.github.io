@@ -94,7 +94,7 @@
       row.appendChild(dt); row.appendChild(dd); list.appendChild(row);
     });
   }
-  if (content) { renderPrices('price-list', content.prices); renderPrices('tech-price-list', content.techPrices); }
+  if (content) renderPrices('price-list', content.prices);
 
   /* Projects + dialog */
   const dialog = doc.getElementById('project-dialog');
