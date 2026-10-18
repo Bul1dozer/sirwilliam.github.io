@@ -40,16 +40,17 @@ There is no production build step — deploy the files as they are.
 | `tests/` | Automated tests |
 | `style.css` | Original DeepSite template stylesheet — unused by the page, left untouched |
 
-## Activate the contact form (required before launch)
+## Contact form setup and verification
 
-Until this is done the form deliberately **sends nothing** and tells visitors to use email/WhatsApp — it never shows a false success.
+The form endpoint is already set in `assets/config.js` to `https://formspree.io/f/xqpenapv` (the endpoint supplied for this project). The code is wired to submit to it, but a repository configuration alone cannot prove that the Formspree form is active or that delivery to the recipient works.
 
-1. Create a free account at https://formspree.io and sign in with (or verify) `liamroyalty9@gmail.com`.
-2. Click **New Form**, name it "Sir William enquiries", and set the recipient to `liamroyalty9@gmail.com`. Confirm the verification email Formspree sends.
-3. Copy the form URL — it looks like `https://formspree.io/f/abcdwxyz`.
-4. Open `assets/config.js` and replace `https://formspree.io/f/YOUR_FORM_ID` with that URL.
-5. In the Formspree dashboard, enable **reCAPTCHA / spam filtering** for the form (free-tier option) and add your site's domain under the form's allowed domains if offered.
-6. Deploy, then verify delivery (below).
+Before launch, sign in to https://formspree.io and verify:
+1. The form ID `xqpenapv` exists in the account.
+2. The recipient is `liamroyalty9@gmail.com` and any required recipient verification has been completed.
+3. The form is enabled and spam filtering is configured. Add the deployed site domain to allowed domains if the dashboard offers that option.
+4. After deploying, submit one controlled test enquiry from a different email address. Confirm it appears under Formspree submissions and reaches the inbox (check Spam too); use Reply to confirm the visitor address is set correctly.
+
+If `xqpenapv` is not the form ID for the correct account/form, replace `formEndpoint` in `assets/config.js` with the exact form URL shown in your Formspree dashboard.
 
 Why `config.js` and not an environment variable: this is a static site with no build step, so nothing can inject env vars. A Formspree form URL is public by design (like a form `action`). **Never** place SMTP passwords, API keys or tokens in this repo.
 
