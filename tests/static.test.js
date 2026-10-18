@@ -47,12 +47,49 @@ test('fabricated testimonials and arbitrary percentages are gone', () => {
   ['Sarah J', 'Michael T', 'Emily K', 'James L', 'Lisa M', 'Five star'].forEach((s) => assert.ok(!html.includes(s), s));
   assert.ok(!/\b\d{1,3}\s?%/.test(doc.body.textContent), 'no percentage ratings in visible text');
 });
-test('prices render in N$ with the agreed values', () => {
+test('only the confirmed haircut prices are published in N
+test('formal penetration testing is not offered', () => {
+  assert.ok(/not currently advertised/i.test(html));
+  assert.ok(!/<option>[^<]*penetration/i.test(html));
+});
+test('SEO basics: title, description, og tags, no invented canonical/og:image', () => {
+  assert.equal(doc.title, 'Sir William | IT Support, Software Development & Mobile Barbering');
+  assert.ok(doc.querySelector('meta[name="description"]').content.includes('Windhoek, Namibia'));
+  assert.ok(doc.querySelector('meta[property="og:title"]'));
+  assert.equal(doc.querySelector('link[rel="canonical"]'), null);
+  assert.equal(doc.querySelectorAll('h1').length, 1);
+});
+test('screenshots that exist on disk are the ones referenced; every project has an image path', () => {
+  const { w } = loadPage();
+  const missing = [];
+  w.SITE_CONTENT.projects.forEach((p) => {
+    assert.ok(p.image && p.alt, p.id);
+    if (!fs.existsSync(path.join(root, p.image))) missing.push(p.image);
+  });
+  assert.deepEqual(missing.sort(), ['images/projects/linux-server.png', 'images/projects/livestream-av.png', 'images/projects/network-diagnostics.png']);
+});
+
+test('Instagram links to the real profile (contact, barbering block, footer)', () => {
+  const ig = [...doc.querySelectorAll('a[href*="instagram.com"]')];
+  assert.ok(ig.length >= 3);
+  ig.forEach((a) => assert.equal(a.getAttribute('href'), 'https://www.instagram.com/the.royals.barbers_ck/'));
+});
+test('gallery: starter photos 1 and 2 exist on disk; block is hidden until photos are found', () => {
+  assert.ok(fs.existsSync(path.join(root, 'images/gallery/1.png')));
+  assert.ok(fs.existsSync(path.join(root, 'images/gallery/2.png')));
+  assert.equal(doc.getElementById('gallery-block').hidden, true);
+});
+test('illustrative project images use https URLs and are described as illustrative', () => {
+  const { w } = loadPage();
+  const fb = w.SITE_CONTENT.projects.filter((p) => p.fallbackImage);
+  assert.deepEqual(Array.from(fb, (p) => p.id).sort(), ['linux-server', 'livestream-av', 'network-diagnostics']);
+  fb.forEach((p) => { assert.match(p.fallbackImage, /^https:\/\//); assert.match(p.fallbackAlt, /^Illustrative/); });
+});
+, () => {
   const { w, doc: d } = loadPage();
   const C = w.SITE_CONTENT;
-  assert.deepEqual(Array.from(C.prices, (p) => (p.prefix || '') + C.currency + p.amount), ['N$70', 'N$50', 'N$40', '+N$35', 'N$50']);
-  const taxi = C.prices.find((p) => p.label === 'Taxi fare');
-  assert.equal(taxi.amount, 50);
+  assert.deepEqual(Array.from(C.prices, (p) => C.currency + p.amount), ['N$70', 'N$50', 'N$40']);
+  assert.equal(d.getElementById('tech-price-list'), null);
 });
 test('formal penetration testing is not offered', () => {
   assert.ok(/not currently advertised/i.test(html));
